@@ -1,2 +1,2 @@
 # GenomeSNP_rewrite
-Given a genome sequence, annotation, and codons will create new genome sequence replacing selected genes with selected replacement
+Given a genome sequence, annotation, and codons will create new genome sequence replacing selected CDS in genes with selected replacement.  Annotation is a gff3 file and genome sequence and codons are fasta files.  The Annotation and Codons must be in asending order and cannot have overlap between CDS's.  provided a Codon_sorter.py file to sort file in ascending order if it isn't already. Also provided test files for viewing desired syntax and running unit tests.
