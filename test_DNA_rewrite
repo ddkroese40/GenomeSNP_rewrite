@@ -1,0 +1,59 @@
+import os
+from DNA_Rewrite import RewriteDNA
+
+# Define paths to test files
+test_files = {
+    "annotation_file": "./tests/test_ManualAnnotation.gff3",
+    "codons_file": "./tests/test_Codons.fasta",
+    "source_gen_seq_file": "./tests/test_sourceGenSeq.fasta",
+}
+
+# Define expected output files and their content
+expected_outputs = {
+    "tests/test_ManualAnnotation_Replicate1_out.fasta": """>Replicate1
+NOWAYSaseMADDYadsfasMATadafSTUFDabcdMATHIASextrachartoTestT
+HADIASrollover
+""",
+    "tests/test_ManualAnnotation_Replicate2_out.fasta": """>Replicate2
+SISSYSaseDADDYadsfasATEadafGOTTAabcdTHADIASextrachartoTestI
+DKTEXTrollover
+"""
+}
+
+def test_entire_rewrite():
+    # Step 1: Run the processing function
+    RewriteDNA(
+        test_files["annotation_file"],
+        test_files["codons_file"],
+        test_files["source_gen_seq_file"]
+    )
+
+    # Step 2: Verify output files
+    all_tests_passed = True
+    for output_file, expected_content in expected_outputs.items():
+        if not os.path.exists(output_file):
+            print(f"Error: Output file {output_file} was not created.")
+            all_tests_passed = False
+            continue
+        
+        with open(output_file, "r") as f:
+            content = f.read()
+            if content.strip() != expected_content.strip():
+                print(f"Test failed for {output_file}.\nExpected:\n{expected_content}\nGot:\n{content}")
+                all_tests_passed = False
+            else:
+                print(f"Test passed for {output_file}.")
+
+    # Step 3: Clean up output files
+    for output_file in expected_outputs.keys():
+        if os.path.exists(output_file):
+            os.remove(output_file)
+            print(f"Deleted output file: {output_file}")
+
+    return all_tests_passed
+
+if __name__ == "__main__":
+    if test_entire_rewrite():
+        print("All tests passed!")
+    else:
+        print("Some tests failed.")
